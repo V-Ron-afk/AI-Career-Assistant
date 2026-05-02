@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-syne: 'Syne', system-ui, sans-serif;
+  --font-dm: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-dm);
+  background-color: #0f1117;
+  color: #e2e8f0;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-syne);
+  font-weight: 700;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f1117; }
+::-webkit-scrollbar-thumb { background: #1e2535; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #14b88f; }
+
+/* Score ring animation */
+@keyframes score-ring {
+  0%   { stroke-dashoffset: 283; }
+  100% { stroke-dashoffset: var(--score-offset); }
+}
+.score-ring-animate {
+  animation: score-ring 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Shimmer loading */
+.shimmer {
+  background: linear-gradient(90deg, #161b27 25%, #1e2535 50%, #161b27 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+/* Glow effect for brand elements */
+.glow-brand {
+  box-shadow: 0 0 20px rgba(20, 184, 143, 0.15);
+}
+
+.glow-brand-hover:hover {
+  box-shadow: 0 0 30px rgba(20, 184, 143, 0.25);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Card base */
+.card {
+  @apply bg-surface-card border border-surface-border rounded-xl;
+}
+
+/* Severity badges */
+.badge-critical { @apply bg-red-500/10 text-red-400 border border-red-500/20; }
+.badge-high     { @apply bg-orange-500/10 text-orange-400 border border-orange-500/20; }
+.badge-medium   { @apply bg-yellow-500/10 text-yellow-400 border border-yellow-500/20; }
+.badge-low      { @apply bg-blue-500/10 text-blue-400 border border-blue-500/20; }
