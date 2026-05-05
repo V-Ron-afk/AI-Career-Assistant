@@ -40,6 +40,7 @@ async def register(payload: UserRegister, db: DBSession):
     db.add(user)
     await db.flush()
     await db.refresh(user)
+    await db.commit()
     return user
 
 
