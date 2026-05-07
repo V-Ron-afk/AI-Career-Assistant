@@ -15,19 +15,19 @@
                           │ HTTP (JWT in Authorization header)
                           ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    FastAPI Backend (Python)                      │
-│  ┌─────────────┐  ┌──────────────┐  ┌────────────────────────┐ │
-│  │  API Layer  │  │ Service Layer│  │  AI Integration Layer  │ │
-│  │  /api/v1/*  │→ │  Business    │→ │   GeminiAIService      │ │
-│  │  JWT Auth   │  │  Logic       │  │   Structured Prompts   │ │
-│  └─────────────┘  └──────────────┘  └────────────────────────┘ │
+│                    FastAPI Backend (Python)                     │
+│  ┌─────────────┐  ┌──────────────┐  ┌────────────────────────┐  │
+│  │  API Layer  │  │ Service Layer│  │  AI Integration Layer  │  │
+│  │  /api/v1/*  │→ │  Business    │→ │   GeminiAIService      │  │
+│  │  JWT Auth   │  │  Logic       │  │   Structured Prompts   │  │
+│  └─────────────┘  └──────────────┘  └────────────────────────┘  │
 │                          │                        │             │
 │                          ▼                        ▼             │
-│  ┌─────────────────────────────┐    ┌────────────────────────┐ │
-│  │     Database Layer          │    │  Google Gemini API     │ │
-│  │  SQLAlchemy (async)         │    │  gemini-1.5-pro        │ │
-│  │  PostgreSQL via asyncpg     │    │  JSON-structured output│ │
-│  └─────────────────────────────┘    └────────────────────────┘ │
+│  ┌─────────────────────────────┐    ┌────────────────────────┐  │
+│  │     Database Layer          │    │  Google Gemini API     │  │
+│  │  SQLAlchemy (async)         │    │  gemini-1.5-pro        │  │
+│  │  PostgreSQL via asyncpg     │    │  JSON-structured output│  │
+│  └─────────────────────────────┘    └────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
                           │
                           ▼
@@ -108,52 +108,6 @@ ai-career-assistant/
 └── README.md
 ```
 ---
-
-## 🔌 API Reference
-
-### Authentication
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/auth/register` | Create account |
-| POST | `/api/v1/auth/login` | Get JWT tokens |
-| POST | `/api/v1/auth/refresh` | Refresh access token |
-
-### Resumes
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/resumes/upload` | Upload PDF/DOCX |
-| GET | `/api/v1/resumes/` | List user resumes |
-| POST | `/api/v1/resumes/{id}/analyze` | AI full analysis |
-| POST | `/api/v1/resumes/{id}/rewrite` | AI rewrite |
-| GET | `/api/v1/resumes/{id}/analyses` | Analysis history |
-
-### Job Matching
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/jobs/match` | Match resume vs JD |
-| GET | `/api/v1/jobs/history` | Past matches |
-
-### Portfolio, Interview, Chat
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/portfolio/review` | GitHub/project review |
-| POST | `/api/v1/interview/generate` | Generate questions |
-| POST | `/api/v1/chat/message` | AI career advisor |
-| GET | `/api/v1/dashboard/stats` | Dashboard metrics |
-
----
-
-## 🧠 AI Prompting Strategy
-
-Each Gemini call uses:
-- **Low temperature (0.3)** for consistent, structured output
-- **`response_mime_type: "application/json"`** to force JSON
-- **Role-specific personas**: hiring manager, ATS expert, senior interviewer
-- **Strict schemas** in every prompt to avoid hallucination drift
-- **Contextual grounding**: every question references actual resume content
-
----
-
 ## 🔐 Security
 
 - Passwords hashed with **bcrypt** (12 rounds)
