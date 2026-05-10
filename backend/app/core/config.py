@@ -21,7 +21,11 @@ class Settings(BaseSettings):
     GEMINI_MODEL: str = "gemini-2.5-flash"
 
     # CORS & Security
-    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:3001"]
+    ALLOWED_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://frontend-service-production-1041.up.railway.app",
+    ]
     ALLOWED_HOSTS: List[str] = ["*"]
 
     # File Upload
