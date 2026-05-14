@@ -35,6 +35,12 @@ class Settings(BaseSettings):
     # Rate limiting (requests per minute per user)
     AI_RATE_LIMIT_PER_MINUTE: int = 5
 
+    def model_post_init(self, __context) -> None:
+        """Ensure Railway's healthcheck hostname is always allowed."""
+        railway_healthcheck_host = "healthcheck.railway.app"
+        if "*" not in self.ALLOWED_HOSTS and railway_healthcheck_host not in self.ALLOWED_HOSTS:
+            self.ALLOWED_HOSTS = [*self.ALLOWED_HOSTS, railway_healthcheck_host]
+
     class Config:
         env_file = ".env"
         case_sensitive = True
