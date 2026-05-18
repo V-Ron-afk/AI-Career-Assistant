@@ -1,5 +1,7 @@
 """Authentication endpoints: register, login, token refresh."""
 
+import logging
+
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy import select
@@ -16,6 +18,7 @@ from app.models.models import User
 from app.schemas.schemas import UserRegister, UserLogin, TokenResponse, UserResponse
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 class RefreshRequest(BaseModel):
@@ -25,8 +28,11 @@ class RefreshRequest(BaseModel):
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register(payload: UserRegister, db: DBSession):
     """Create a new user account."""
+    logger.info(f"Register endpoint called for email: {payload.email}")
+
     result = await db.execute(select(User).where(User.email == payload.email))
     if result.scalar_one_or_none():
+        logger.warning(f"Registration failed — account already exists for email: {payload.email}")
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="An account with this email already exists.",
@@ -37,10 +43,23 @@ async def register(payload: UserRegister, db: DBSession):
         full_name=payload.full_name,
         hashed_password=get_password_hash(payload.password),
     )
+
+    logger.info(f"Adding new user to session for email: {payload.email}")
     db.add(user)
+
+    logger.info("Flushing database session")
     await db.flush()
+    logger.info("Flush successful")
+
+    logger.info("Refreshing user instance from database")
     await db.refresh(user)
+    logger.info("Refresh successful")
+
+    logger.info("Committing transaction")
     await db.commit()
+    logger.info("Commit successful")
+
+    logger.info(f"User created successfully with ID: {user.id}")
     return user
 
 
