@@ -1,6 +1,6 @@
 # 🚀 AI Career Assistant Platform
 
-> A production-ready, AI-powered career platform — resume analysis, job matching, portfolio review, interview prep, and an AI career advisor. Built with Next.js, FastAPI, PostgreSQL, and Google Gemini.
+> A production-ready, AI-powered career platform resume analysis, job matching, portfolio review, interview prep, and an AI career advisor. Built with Next.js, FastAPI, PostgreSQL, and Google Gemini.
 
 ---
 
